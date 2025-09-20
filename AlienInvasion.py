@@ -235,8 +235,6 @@ class AlienInvasion:
             self.ship.center_ship()
             
             # Pause.
-            sleep(0.5)
-        else:
             self.stats.game_active = False
             pygame.mouse.set_visible(True)
             
