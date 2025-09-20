@@ -1,0 +1,72 @@
+Trong Pygame, Sprite là một class cơ bản dùng để quản lý các đối tượng trong game, như nhân vật, kẻ địch, đạn, vật phẩm, v.v. Nó cung cấp sẵn nhiều tính năng giúp bạn dễ dàng:
+
+Quản lý hình ảnh (image) và vị trí (rect) của đối tượng.
+
+Gom nhóm các sprite với Group để dễ cập nhật và vẽ lên màn hình.
+
+Xử lý va chạm (collision) giữa các sprite.
+
+Dùng Sprite giúp code gọn gàng, tổ chức tốt hơn, và dễ mở rộng khi game phức tạp.
+
+import pygame
+
+# Khởi tạo Pygame
+pygame.init()
+
+# Màn hình game
+screen = pygame.display.set_mode((800, 600))
+pygame.display.set_caption("Sprite Example")
+
+# Class nhân vật
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()  # Gọi hàm khởi tạo của Sprite
+
+        # Tạo hình ảnh cho nhân vật (50x50, màu xanh)
+        self.image = pygame.Surface((50, 50))
+        self.image.fill((0, 255, 0))
+
+        # Lấy rect để xác định vị trí
+        self.rect = self.image.get_rect()
+        self.rect.center = (400, 300)
+
+    def update(self):
+        # Cập nhật vị trí dựa trên phím bấm
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_UP]:
+            self.rect.y -= 5
+        if keys[pygame.K_DOWN]:
+            self.rect.y += 5
+        if keys[pygame.K_LEFT]:
+            self.rect.x -= 5
+        if keys[pygame.K_RIGHT]:
+            self.rect.x += 5
+
+
+# Tạo nhóm sprite
+all_sprites = pygame.sprite.Group()
+
+# Tạo nhân vật
+player = Player()
+all_sprites.add(player)
+
+# Vòng lặp game
+running = True
+clock = pygame.time.Clock()
+
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    # Cập nhật sprite
+    all_sprites.update()
+
+    # Vẽ màn hình
+    screen.fill((0, 0, 0))
+    all_sprites.draw(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+
+pygame.quit()
